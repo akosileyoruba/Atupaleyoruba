@@ -317,6 +317,214 @@ body{background:var(--bg);font-family:var(--fb);color:var(--ink);-webkit-font-sm
   </div>
   <div class="puz-word-box">
     <div class="puz-word" id="puz-word">—</div>
+    <div class="puz-word-hint" id="p
+/* FINAL WORD RESULT */
+.result-banner{margin-top:14px;padding:12px 14px;border-radius:10px;background:linear-gradient(135deg,#1c2a47,#324677);color:#fdf6e3;}
+.result-banner .rb-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.7;margin-bottom:4px;}
+.result-banner .rb-formula{font-size:12px;opacity:.8;font-family:var(--fd);margin-bottom:6px;}
+.result-banner .rb-word{font-family:var(--fd);font-size:28px;font-weight:700;font-style:italic;}
+.result-banner .rb-literal{font-size:13px;opacity:.85;margin-top:3px;}
+
+/* SAVED */
+.saved-title{font-family:var(--fd);font-weight:600;font-size:15px;color:var(--indigo);margin:20px 0 8px;}
+.s-item{background:var(--card);border:1px solid var(--edge);border-radius:10px;padding:11px 13px;
+  display:flex;align-items:center;gap:10px;margin-bottom:7px;cursor:pointer;box-shadow:var(--shadow);}
+.s-item-main{flex:1;min-width:0;}
+.s-item-word{font-family:var(--fd);font-weight:700;color:var(--indigo);font-size:15px;}
+.s-item-sub{font-size:12px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.s-del{background:none;border:none;color:var(--gray);font-size:16px;cursor:pointer;padding:4px 6px;flex-shrink:0;}
+.empty{font-size:12.5px;color:var(--gray);font-style:italic;text-align:center;padding:10px 0;}
+
+/* === PUZZLE === */
+.puzzle-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.puzzle-hdr h2{font-family:var(--fd);font-weight:700;font-size:18px;color:var(--indigo);}
+.level-badge{background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;}
+.score-bar{display:flex;gap:8px;align-items:center;margin-bottom:14px;font-size:12.5px;color:var(--ink-soft);}
+.score-pips{display:flex;gap:4px;}
+.pip{width:12px;height:12px;border-radius:50%;background:var(--edge);}
+.pip.done{background:var(--green);}
+.puz-word-box{text-align:center;padding:20px;background:var(--card);border:2px solid var(--indigo);border-radius:var(--r);margin-bottom:16px;box-shadow:var(--shadow);}
+.puz-word{font-family:var(--fd);font-weight:700;font-size:44px;color:var(--indigo);}
+.puz-word-hint{font-size:12px;color:var(--gray);margin-top:6px;}
+.puz-question{font-size:14px;color:var(--ink);margin-bottom:10px;font-weight:600;}
+.puz-drop-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;min-height:46px;padding:8px;border:2px dashed var(--edge);border-radius:10px;align-items:center;}
+.puz-drop-row.accept{border-color:var(--terra);background:#fdf3ee;}
+.puz-tile{background:var(--indigo);color:#fdf6e3;border:none;padding:9px 14px;border-radius:8px;
+  font-family:var(--fd);font-weight:700;font-size:16px;cursor:pointer;transition:transform .1s;user-select:none;}
+.puz-tile:active{transform:scale(.95);}
+.puz-tile.placed{background:var(--terra);}
+.puz-tile.correct{background:var(--green);}
+.puz-tile.wrong{background:var(--red);}
+.tiles-pool{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.puz-feedback{text-align:center;padding:12px;border-radius:10px;font-size:14px;font-weight:600;margin-bottom:12px;display:none;}
+.puz-feedback.show{display:block;}
+.puz-feedback.ok{background:var(--green-bg);color:var(--green);}
+.puz-feedback.err{background:var(--red-bg);color:var(--red);}
+.puz-actions{display:flex;gap:8px;justify-content:center;}
+
+/* EMBED SECTION */
+.embed-sec{margin-top:24px;padding-top:16px;border-top:2px solid var(--edge);}
+.embed-title{font-family:var(--fd);font-weight:700;font-size:16px;color:var(--indigo);margin-bottom:6px;}
+.embed-note{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:12px;}
+.embed-plan{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.eplan-card{flex:1;min-width:140px;background:var(--card);border:1px solid var(--edge);border-radius:10px;padding:12px;box-shadow:var(--shadow);}
+.eplan-card h4{font-size:13px;font-weight:700;color:var(--indigo);margin-bottom:4px;}
+.eplan-card p{font-size:11.5px;color:var(--ink-soft);line-height:1.4;}
+.eplan-card .price{font-size:16px;font-weight:700;color:var(--gold);margin-top:6px;}
+.code-block{background:#1c2a47;color:#fdf6e3;border-radius:10px;padding:14px;font-size:11.5px;font-family:monospace;white-space:pre-wrap;word-break:break-all;position:relative;margin-bottom:10px;}
+.copy-btn{position:absolute;top:8px;right:8px;background:var(--terra);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:var(--fb);}
+.copy-btn:active{opacity:.8;}
+
+/* === LANGUAGE TAB === */
+.lang-sec{margin-bottom:6px;}
+.lang-acc{background:var(--card);border:1px solid var(--edge);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:8px;}
+.lang-acc-head{display:flex;align-items:center;gap:12px;padding:13px 15px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.lang-acc-icon{font-size:22px;flex-shrink:0;}
+.lang-acc-titles{flex:1;}
+.lang-acc-title{font-family:var(--fd);font-weight:700;font-size:15px;color:var(--indigo);}
+.lang-acc-sub{font-size:11px;color:var(--gray);margin-top:1px;}
+.lang-acc-caret{color:var(--gray);font-size:11px;transition:transform .2s;flex-shrink:0;}
+.lang-acc.open .lang-acc-caret{transform:rotate(90deg);}
+.lang-acc-body{display:none;padding:0 15px 15px;}
+.lang-acc.open .lang-acc-body{display:block;}
+
+/* alphabet grid */
+.alpha-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px;}
+.alpha-cell{background:var(--bg);border:1px solid var(--edge);border-radius:8px;padding:8px 4px;text-align:center;cursor:pointer;transition:background .15s;}
+.alpha-cell:active{background:var(--edge);}
+.alpha-cell .ac-letter{font-family:var(--fd);font-weight:700;font-size:20px;color:var(--indigo);}
+.alpha-cell .ac-name{font-size:9px;color:var(--gray);margin-top:2px;}
+.alpha-cell .ac-sound{font-size:9px;color:var(--terra-deep);font-style:italic;}
+.alpha-detail{background:var(--indigo);color:#fdf6e3;border-radius:10px;padding:12px 14px;margin-top:8px;display:none;}
+.alpha-detail.show{display:block;}
+.alpha-detail .ad-letter{font-family:var(--fd);font-size:36px;font-weight:700;}
+.alpha-detail .ad-name{font-size:13px;opacity:.8;margin-top:2px;}
+.alpha-detail .ad-sound{font-size:12px;color:var(--gold);margin-top:4px;}
+.alpha-detail .ad-example{font-size:12px;opacity:.75;margin-top:4px;font-style:italic;}
+
+/* consonant rows */
+.con-table{width:100%;border-collapse:collapse;font-size:13px;}
+.con-table th{font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.4px;padding:5px 6px;border-bottom:1px solid var(--edge);text-align:left;}
+.con-table td{padding:7px 6px;border-bottom:1px dashed var(--edge);color:var(--ink-soft);line-height:1.35;}
+.con-table td:first-child{font-family:var(--fd);font-weight:700;font-size:17px;color:var(--indigo);}
+.con-table tr:last-child td{border-bottom:none;}
+.con-special{background:#f0ebd8;border-radius:4px;}
+
+/* tone display */
+.tone-demo-row{display:flex;gap:8px;margin-bottom:12px;}
+.tone-card{flex:1;border-radius:10px;padding:12px 8px;text-align:center;}
+.tone-card .tc-mark{font-size:22px;font-weight:700;font-family:var(--fd);}
+.tone-card .tc-name{font-size:11px;font-weight:700;letter-spacing:.5px;margin-top:4px;text-transform:uppercase;}
+.tone-card .tc-desc{font-size:11px;margin-top:4px;line-height:1.3;opacity:.85;}
+.tone-card .tc-ex{font-size:13px;font-family:var(--fd);font-weight:600;margin-top:6px;}
+.tone-pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.tone-pair{background:var(--bg);border:1px solid var(--edge);border-radius:8px;padding:9px 10px;}
+.tone-pair .tp-words{font-family:var(--fd);font-weight:700;font-size:15px;color:var(--indigo);}
+.tone-pair .tp-means{font-size:11.5px;color:var(--ink-soft);margin-top:3px;line-height:1.3;}
+
+/* vowels */
+.vowel-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.vowel-chip{background:var(--bg);border:1.5px solid var(--edge);border-radius:8px;padding:6px 10px;text-align:center;min-width:52px;}
+.vowel-chip .vc-v{font-family:var(--fd);font-weight:700;font-size:20px;color:var(--indigo);}
+.vowel-chip .vc-s{font-size:10px;color:var(--terra-deep);margin-top:1px;}
+.vowel-section-label{font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.5px;text-transform:uppercase;margin:10px 0 6px;}
+.harmony-box{background:linear-gradient(135deg,#1c2a47,#324677);color:#fdf6e3;border-radius:10px;padding:12px 14px;margin-top:10px;}
+.harmony-box h4{font-size:13px;font-weight:700;margin-bottom:6px;color:var(--gold);}
+.harmony-box p{font-size:12px;line-height:1.5;opacity:.88;}
+.harmony-box .hb-pair{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+.harmony-box .hb-item{background:rgba(255,255,255,.1);border-radius:6px;padding:5px 9px;font-size:12px;font-family:var(--fd);}
+
+/* numbers */
+.num-intro{font-size:12.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:10px;}
+.num-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px dashed var(--edge);}
+.num-row:first-child{border-top:none;}
+.num-digit{font-family:var(--fd);font-weight:700;font-size:22px;color:var(--indigo);min-width:36px;}
+.num-word{font-family:var(--fd);font-weight:600;font-size:15px;color:var(--terra-deep);min-width:90px;}
+.num-note{font-size:12px;color:var(--ink-soft);flex:1;line-height:1.35;}
+.num-system-box{background:var(--bg);border:1px solid var(--edge);border-radius:10px;padding:12px;margin-top:12px;}
+.num-system-box h4{font-size:13px;font-weight:700;color:var(--indigo);margin-bottom:8px;}
+
+/* SOURCE CODE VIEW */
+.src-intro{font-size:12.5px;color:var(--ink-soft);margin-bottom:12px;line-height:1.5;}
+.src-block{background:#1c2a47;color:#a8d0a8;border-radius:10px;padding:14px;font-size:11px;font-family:monospace;max-height:320px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;position:relative;margin-bottom:10px;}
+.src-block .kw{color:#f0c674;} .src-block .str{color:#b5d5f5;} .src-block .cm{color:#7a9a7a;}
+</style>
+<!-- Pi Network SDK -->
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+</head>
+<body>
+<div class="app">
+
+<header class="hdr">
+  <div class="tone-row"><b>▲</b> – <i>▼</i></div>
+  <h1>ÀTÚPALẸ̀</h1>
+  <p>Yorùbá syllables · prefixes · word formation</p>
+</header>
+
+<div id="pi-bar" style="display:none;background:linear-gradient(135deg,#6b3fa0,#1c2a47);color:#fdf6e3;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:13px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+  <span style="font-size:18px;flex-shrink:0;">π</span>
+  <div style="flex:1;min-width:0;">
+    <div id="pi-username" style="font-weight:700;font-size:14px;">Connecting to Pi...</div>
+    <div id="pi-status" style="font-size:11px;opacity:.8;margin-top:1px;">Loading Pi Network</div>
+  </div>
+  <button id="pi-signin-btn" class="btn sm" style="background:rgba(255,255,255,.2);color:#fff;display:none;padding:7px 12px;font-size:12px;border:1px solid rgba(255,255,255,.4);">
+    Sign in with Pi
+  </button>
+  <button id="pi-pay-puzzle" class="btn sm" style="background:var(--gold);color:#fff;display:none;padding:7px 12px;font-size:12px;">
+    Play Puzzle (1π)
+  </button>
+</div>
+
+<nav class="tabs">
+  <button class="tab on" data-tab="syl">Syllables<small>Ôrò ipilẹ̀</small></button>
+  <button class="tab" data-tab="pre">Prefixes<small>Àfikún</small></button>
+  <button class="tab" data-tab="lab">Word Lab<small>Àtúpalẹ̀</small></button>
+  <button class="tab" data-tab="puz">Puzzle<small>Eré ìdánwò</small></button>
+  <button class="tab" data-tab="src">Code<small>Ìtẹjáde</small></button>
+  <button class="tab" data-tab="lang">Language<small>Èdè Yorùbá</small></button>
+</nav>
+
+<!-- SYLLABLES -->
+<section class="panel on" id="p-syl">
+  <div class="flash card" id="flashcard">
+    <div class="tone-chip" id="tc"></div>
+    <div class="flash-word" id="fw">—</div>
+    <div class="flash-meaning hide" id="fm"></div>
+    <div class="flash-hint" id="fh">Tap to reveal meaning</div>
+  </div>
+  <div class="stats">Explored: <b id="exp">0</b> syllables</div>
+</section>
+
+<!-- PREFIXES -->
+<section class="panel" id="p-pre">
+  <div id="pref-out"></div>
+</section>
+
+<!-- WORD LAB -->
+<section class="panel" id="p-lab">
+  <div class="lab-intro">Type any Yorùbá compound word — the app will break it into morphemes and use AI to auto-fill its meaning.</div>
+  <div class="input-row">
+    <input type="text" id="ci" class="txt" placeholder="e.g. Ilé, Àpajẹ, Iwájú">
+    <button class="btn" id="db">Break down</button>
+  </div>
+  <div id="lab-out"></div>
+  <div class="saved-title">My Compound Words</div>
+  <div id="saved-list"></div>
+</section>
+
+<!-- PUZZLE -->
+<section class="panel" id="p-puz">
+  <div class="puzzle-hdr">
+    <h2>Word Decoder</h2>
+    <div class="level-badge" id="lv-badge">Level 1</div>
+  </div>
+  <div class="score-bar">
+    <span>Progress:</span>
+    <div class="score-pips" id="pips"></div>
+    <span id="score-txt">0 / 3 correct</span>
+  </div>
+  <div class="puz-word-box">
+    <div class="puz-word" id="puz-word">—</div>
     <div class="puz-word-hint" id="puz-hint">Arrange the syllable tiles below in the correct order</div>
   </div>
   <div class="puz-question" id="puz-q">Tap tiles in order: PREFIX → ROOT → SUFFIX</div>
