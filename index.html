@@ -253,12 +253,15 @@ body{background:var(--bg);font-family:var(--fb);color:var(--ink);-webkit-font-sm
   <p>Yorùbá syllables · prefixes · word formation</p>
 </header>
 
-<div id="pi-bar" style="display:none;background:linear-gradient(135deg,#6b3fa0,#1c2a47);color:#fdf6e3;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:13px;display:flex;align-items:center;gap:10px;">
-  <span style="font-size:18px;">π</span>
-  <div style="flex:1;">
+<div id="pi-bar" style="display:none;background:linear-gradient(135deg,#6b3fa0,#1c2a47);color:#fdf6e3;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:13px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+  <span style="font-size:18px;flex-shrink:0;">π</span>
+  <div style="flex:1;min-width:0;">
     <div id="pi-username" style="font-weight:700;font-size:14px;">Connecting to Pi...</div>
     <div id="pi-status" style="font-size:11px;opacity:.8;margin-top:1px;">Loading Pi Network</div>
   </div>
+  <button id="pi-signin-btn" class="btn sm" style="background:rgba(255,255,255,.2);color:#fff;display:none;padding:7px 12px;font-size:12px;border:1px solid rgba(255,255,255,.4);">
+    Sign in with Pi
+  </button>
   <button id="pi-pay-puzzle" class="btn sm" style="background:var(--gold);color:#fff;display:none;padding:7px 12px;font-size:12px;">
     Play Puzzle (1π)
   </button>
@@ -351,7 +354,7 @@ body{background:var(--bg);font-family:var(--fb);color:var(--ink);-webkit-font-sm
     <div style="font-size:12px;color:var(--ink-soft);margin-bottom:8px;">Copy this iframe code and paste into any site:</div>
     <div class="code-block" id="embed-code-block">
 &lt;iframe
-  src="YOUR_HOSTED_URL?embed=1&amp;level=1"
+  src="https://akosileyoruba.github.io/Atupaleyoruba?embed=1&amp;level=1"
   width="100%"
   height="560"
   style="border:none;border-radius:14px;"
@@ -372,7 +375,7 @@ body{background:var(--bg);font-family:var(--fb);color:var(--ink);-webkit-font-sm
   <div class="src-block" id="src-display">Loading source...</div>
   <div style="font-size:11.5px;color:var(--ink-soft);margin-top:8px;line-height:1.5;">
     <b>For Pi Network raffle (deadline June 28, 2026):</b><br>
-    Share this app in vibe coder communities (Reddit, X, Facebook dev groups) as an example of an AI-built app ready for Pi App Studio. Then submit your post link via the <b>"Vibe Coder" button</b> in your Pi mining app.
+    Share this app in vibe coder communities (Reddit, X, Facebook dev groups) as an example of an AI-built app ready for Pi App Studio. Then submit your post link via the <b>"Vibe Coder" button</b> in your Pi mining app.<br><br><b>Your live app URL:</b> <a href="https://akosileyoruba.github.io/Atupaleyoruba" style="color:var(--gold)" target="_blank">https://akosileyoruba.github.io/Atupaleyoruba</a>
   </div>
 </section>
 <!-- LANGUAGE -->
@@ -1018,7 +1021,8 @@ function showAlpha(i){
 
 
 /* ══════════ PI NETWORK INTEGRATION ══════════ */
-const PI_APP_NAME = 'ÀTÚPALẸ̀';
+// Pi App Studio verification requires Pi.authenticate() to fire
+// immediately on page load with no blocking awaits before it.
 let piUser = null;
 let piReady = false;
 
@@ -1026,115 +1030,93 @@ function isPiBrowser(){
   return typeof window.Pi !== 'undefined';
 }
 
-async function initPi(){
+function updatePiBar(username, status, showPay, showSignIn){
   const bar = document.getElementById('pi-bar');
-  if(!bar) return;
-  bar.style.display = 'flex';
+  const nameEl = document.getElementById('pi-username');
+  const statEl = document.getElementById('pi-status');
+  const payBtn = document.getElementById('pi-pay-puzzle');
+  const signBtn = document.getElementById('pi-signin-btn');
+  if(bar) bar.style.display = 'flex';
+  if(nameEl) nameEl.textContent = username;
+  if(statEl) statEl.textContent = status;
+  if(payBtn) payBtn.style.display = showPay ? 'inline-block' : 'none';
+  if(signBtn) signBtn.style.display = showSignIn ? 'inline-block' : 'none';
+}
 
+function runPiAuth(){
   if(!isPiBrowser()){
-    document.getElementById('pi-username').textContent = 'Open in Pi Browser';
-    document.getElementById('pi-status').textContent = 'Pi features require the Pi Browser app';
-    bar.style.background = '#5c5341';
+    updatePiBar('Open in Pi Browser', 'Pi features require the Pi Browser app', false, false);
+    const bar = document.getElementById('pi-bar');
+    if(bar){ bar.style.display='flex'; bar.style.background='#5c5341'; }
     return;
   }
 
-  try{
-    Pi.init({ version: '2.0', sandbox: false });
+  updatePiBar('Connecting to Pi...', 'Signing in...', false, false);
 
-    const scopes = ['username', 'payments'];
+  // Pi App Studio requires: call Pi.authenticate() directly — synchronously triggered,
+  // not behind an await. Pi.init() result is ignored per their quick-start/genai spec.
+  Pi.init({ version: '2.0' });
 
-    function onIncompletePaymentFound(payment){
-      // Handle any incomplete payment left from a previous session
-      console.log('Incomplete payment found:', payment);
-    }
-
-    const auth = await Pi.authenticate(scopes, onIncompletePaymentFound);
+  Pi.authenticate(['username', 'payments'], function onIncompletePaymentFound(payment){
+    console.log('Incomplete payment:', payment.identifier);
+  }).then(function(auth){
     piUser = auth.user;
     piReady = true;
+    const name = (piUser && piUser.username) ? piUser.username : 'Pioneer';
+    updatePiBar('π ' + name, 'Signed in · ÀTÚPALẸ̀ Yorùbá', true, false);
 
-    document.getElementById('pi-username').textContent = 'π ' + (piUser.username || 'Pioneer');
-    document.getElementById('pi-status').textContent = 'Signed in · ÀTÚPALẸ̀ Yorùbá App';
+    // Validate token with Pi server (best-effort — CORS may block on GitHub Pages)
+    fetch('https://api.minepi.com/v2/me', {
+      headers: { 'Authorization': 'Bearer ' + auth.accessToken }
+    }).then(function(r){ return r.json(); })
+      .then(function(data){ console.log('Pi user verified:', data.username); })
+      .catch(function(e){ console.warn('Token validation blocked (expected on static host):', e.message); });
 
-    // Show the pay-to-play puzzle button
-    const payBtn = document.getElementById('pi-pay-puzzle');
-    if(payBtn) payBtn.style.display = 'inline-block';
-
-  }catch(e){
-    console.error('Pi auth error:', e);
-    document.getElementById('pi-username').textContent = 'Pi sign-in failed';
-    document.getElementById('pi-status').textContent = 'Tap to retry or continue as guest';
-    bar.addEventListener('click', initPi, {once:true});
-  }
+  }).catch(function(err){
+    console.error('Pi.authenticate error:', err);
+    updatePiBar('Not signed in', 'Tap "Sign in with Pi" to connect', false, true);
+  });
 }
 
-// Pi payment for puzzle play (1π per session)
-async function piPayForPuzzle(){
+// Pi payment for puzzle (1π per session)
+function piPayForPuzzle(){
   if(!piReady || !isPiBrowser()){
     alert('Please open ÀTÚPALẸ̀ in the Pi Browser app to use Pi payments.');
     return;
   }
-
-  const paymentData = {
+  Pi.createPayment({
     amount: 1,
     memo: 'ÀTÚPALẸ̀ — Yorùbá Word Puzzle (1 session)',
-    metadata: {
-      app: 'atupale-yoruba',
-      feature: 'puzzle-session',
-      user: piUser ? piUser.username : 'unknown',
-      timestamp: Date.now()
-    }
-  };
-
-  const callbacks = {
-    onReadyForServerApproval: function(paymentId){
-      // In a full backend setup you'd call your server here to approve.
-      // For this frontend-only app we auto-approve via Pi's sandbox flow.
-      console.log('Ready for approval, paymentId:', paymentId);
-    },
-    onReadyForServerCompletion: function(paymentId, txid){
-      console.log('Payment complete! txid:', txid);
-      // Unlock puzzle session
-      unlockPuzzleSession();
-    },
-    onCancel: function(paymentId){
-      console.log('Payment cancelled:', paymentId);
-    },
-    onError: function(error, payment){
-      console.error('Payment error:', error, payment);
-      alert('Payment failed: ' + (error.message || error));
-    }
-  };
-
-  try{
-    await Pi.createPayment(paymentData, callbacks);
-  }catch(e){
-    console.error('createPayment error:', e);
-  }
+    metadata: { app: 'atupale-yoruba', user: piUser ? piUser.username : 'unknown' }
+  }, {
+    onReadyForServerApproval: function(paymentId){ console.log('Approval needed:', paymentId); },
+    onReadyForServerCompletion: function(paymentId, txid){ console.log('Complete, txid:', txid); unlockPuzzleSession(); },
+    onCancel: function(paymentId){ console.log('Cancelled:', paymentId); },
+    onError: function(err, payment){ console.error('Payment error:', err, payment); alert('Payment error: ' + err.message); }
+  });
 }
 
 function unlockPuzzleSession(){
-  // Mark puzzle as paid and switch to puzzle tab
-  sessionStorage.setItem('puzzle_paid', '1');
+  sessionStorage.setItem('puzzle_paid','1');
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelector('[data-tab="puz"]').classList.add('on');
   document.getElementById('p-puz').classList.add('on');
   initPuzzle();
-
-  const bar = document.getElementById('pi-bar');
-  if(bar){
-    document.getElementById('pi-status').textContent = '✓ Puzzle unlocked! Enjoy your session.';
-  }
+  const statEl = document.getElementById('pi-status');
+  if(statEl) statEl.textContent = '✓ Puzzle unlocked!';
 }
 
-// Wire up the Pay button
+// Fire immediately when DOM is ready
 document.addEventListener('DOMContentLoaded', function(){
   const payBtn = document.getElementById('pi-pay-puzzle');
+  const signBtn = document.getElementById('pi-signin-btn');
   if(payBtn) payBtn.addEventListener('click', piPayForPuzzle);
-
-  // Auto-init Pi on load
-  initPi();
+  if(signBtn) signBtn.addEventListener('click', runPiAuth);
+  // Run Pi auth immediately on page load — required by Pi App Studio verifier
+  runPiAuth();
 });
+
 
 </script>
 </body>
